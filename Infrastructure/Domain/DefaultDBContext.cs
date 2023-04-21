@@ -34,22 +34,121 @@ namespace Capstonep2.Infrastructure.Domain
             List<Prescription> prescriptions = new List<Prescription>();
             List<UserLogin> userLogins = new List<UserLogin>();
             List<UserRole> userRoles = new List<UserRole>();
-           
-            
-         
 
-        
+
+            //patient2
+            patients.Add(new Patient()
+            {
+                ID = Guid.Parse("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                FirstName = "Clarissa Joy",
+                MiddleName = "Gozon",
+                LastName = "Flores",
+                Address = "Luakan,Dinalupihan, Bataan",
+                BirthDate = DateTime.Parse("23/03/2023"),
+
+                Gender = Models.Enums.Gender.Male
+            });
+            //patient2
+            //user2
+            users.Add(new User()
+            {
+                ID = Guid.Parse("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                PatientID = Guid.Parse("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                Email = "joy@yahoo.com",
+                FirstName = "Clarissa Joy",
+                LastName = "Gozon",
+                MiddleName = "Flores",
+                BirthDate = DateTime.Parse("23/01/2001"),
+                Gender = Models.Enums.Gender.Male,
+                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
+                Address = "Dinalupihan, Orani, Bataan"
+            });
+            userLogins.AddRange(new List<UserLogin>()
+            {
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =Guid.Parse("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                    Type = "General",
+                    Key = "Password",
+                    Value = BCrypt.Net.BCrypt.EnhancedHashPassword("capstone")
+                },
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =Guid.Parse("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                    Type = "General",
+                    Key = "IsActive",
+                    Value = "true"
+                },
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =Guid.Parse("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                    Type = "General",
+                    Key = "LoginRetries",
+                    Value = "0"
+                }
+            });
+            userRoles.Add(new UserRole()
+            {
+                Id = Guid.NewGuid(),
+                UserID = Guid.Parse("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
+            });
+            // user2
+
+            //appts2
+            appointments.Add(new Appointment()
+            {
+                ID = Guid.Parse("3ce371f9-dc79-4623-b84f-0b2fe7c99962"),
+                PatientID = Guid.Parse("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                StartTime = DateTime.Parse("12-02-23 11:30"),
+                EndTime = DateTime.Parse("12-02-23 12:00"),
+                PurposeOfVisit = Models.Enums.Purpose.CheckUp,
+                Symptom = "Light Sensitivity",
+                Status = Models.Enums.Status.Completed
+
+            });
+            //appts2
+
+            //cr2
+            consultationRecords.Add(new ConsultationRecord()
+            {
+                PatientID = Guid.Parse("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                AppointmentID = Guid.Parse("3ce371f9-dc79-4623-b84f-0b2fe7c99962"),
+                ID = Guid.Parse("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+
+            });
+            //cr
+            //finding2-Prescription
+            findings.Add(new Finding()
+            {
+                ConsultationRecordID = Guid.Parse("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+                Description = "test2",
+                ID = Guid.NewGuid(),
+                Tags = "test2"
+            });
+
+            prescriptions.Add(new Prescription()
+            {
+                ConsultationRecordID = Guid.Parse("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+                Description = " test 2",
+                ID = Guid.NewGuid(),
+                Tags = "test2"
+            });
+            //finding2
 
             patients.Add(new Patient()
             {
                 ID = Guid.Parse("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"),
                 FirstName = "Raniel",
-                MiddleName = "Adan",
-                LastName = "Morales",
-                Address = "Dinalupihan, Orani, Bataan",
+                MiddleName = "Mallari",
+                LastName = "David",
+                Address = "Bacong,Hermosa, Bataan",
                 BirthDate = DateTime.Parse("23/03/2023"),
 
-                Gender = Models.Enums.Gender.male
+                Gender = Models.Enums.Gender.Male
             });
 
             appointments.Add(new Appointment()
@@ -152,13 +251,11 @@ namespace Capstonep2.Infrastructure.Domain
                 PatientID = Guid.Parse("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"),
                 Email = "renieldavid@yahoo.com",
                 FirstName = "Reniel",
-                LastName = "David",
-                MiddleName = "Adan",
+                LastName = "Mallari",
+                MiddleName = "David",
                 BirthDate = DateTime.Parse("23/01/2001"),
-
-                Gender = Models.Enums.Gender.male,
-                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a")
-                ,
+                Gender = Models.Enums.Gender.Male,
+                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
                 Address = "Dinalupihan, Orani, Bataan"
             });
 
@@ -172,7 +269,7 @@ namespace Capstonep2.Infrastructure.Domain
                 MiddleName = "Adan",
                 BirthDate = DateTime.Parse("21/02/2002"),
 
-                Gender = Models.Enums.Gender.female,
+                Gender = Models.Enums.Gender.Female,
                 RoleID = Guid.Parse("54f00f70-72b8-4d34-a953-83321ff6b101"),
                 Address = "Dinalupihan, Orani , Bataan"
 
@@ -204,7 +301,13 @@ namespace Capstonep2.Infrastructure.Domain
                     Value = "0"
                 }
             });
-
+            userRoles.Add(new UserRole()
+            {
+                Id = Guid.NewGuid(),
+                UserID = Guid.Parse("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
+                RoleID = Guid.Parse("54f00f70-72b8-4d34-a953-83321ff6b101"),
+            });
+            //role
             roles.Add(new Role()
             {
                 ID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
@@ -220,6 +323,7 @@ namespace Capstonep2.Infrastructure.Domain
                 Abbreviation = "Adm",
                 Description = "One who manages the system"
             });
+            //role
 
             userLogins.AddRange(new List<UserLogin>()
             {
@@ -255,12 +359,7 @@ namespace Capstonep2.Infrastructure.Domain
                 RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
             });
 
-            userRoles.Add(new UserRole()
-            {
-                Id = Guid.NewGuid(),
-                UserID = Guid.Parse("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
-                RoleID = Guid.Parse("54f00f70-72b8-4d34-a953-83321ff6b101"),
-            });
+          
 
 
             modelBuilder.Entity<ConsultationRecord>().HasData(consultationRecords);

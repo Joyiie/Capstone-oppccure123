@@ -52,6 +52,16 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
+                            ID = new Guid("3ce371f9-dc79-4623-b84f-0b2fe7c99962"),
+                            EndTime = new DateTime(2023, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            PatientID = new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                            PurposeOfVisit = 1,
+                            StartTime = new DateTime(2023, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            Status = 4,
+                            Symptom = "Light Sensitivity"
+                        },
+                        new
+                        {
                             ID = new Guid("c7d431a6-579b-4841-8629-2bbcb79a5e15"),
                             EndTime = new DateTime(2023, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             PatientID = new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"),
@@ -115,6 +125,12 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
+                            ID = new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+                            AppointmentID = new Guid("3ce371f9-dc79-4623-b84f-0b2fe7c99962"),
+                            PatientID = new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b")
+                        },
+                        new
+                        {
                             ID = new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"),
                             AppointmentID = new Guid("20f20659-d4e3-466e-b2df-e6a6b1f62fab"),
                             PatientID = new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a")
@@ -151,14 +167,21 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
-                            ID = new Guid("029e7d21-268b-4153-ae4d-edc0361e23e6"),
+                            ID = new Guid("6ac28027-f3a3-4bca-8a96-4a0e7046286e"),
+                            ConsultationRecordID = new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+                            Description = "test2",
+                            Tags = "test2"
+                        },
+                        new
+                        {
+                            ID = new Guid("2ba4301b-e40f-46e3-af07-eb60c7331f26"),
                             ConsultationRecordID = new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"),
                             Description = "findings test 1",
                             Tags = "testtable123"
                         },
                         new
                         {
-                            ID = new Guid("c1f141ca-22d8-4481-9a23-6fb1bae6bd65"),
+                            ID = new Guid("7ee88ccf-d455-46f9-bba9-6b8d3a8abe82"),
                             ConsultationRecordID = new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"),
                             Description = "sore eyes",
                             Tags = "123"
@@ -196,13 +219,23 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
+                            ID = new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                            Address = "Luakan,Dinalupihan, Bataan",
+                            BirthDate = new DateTime(2023, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Clarissa Joy",
+                            Gender = 1,
+                            LastName = "Flores",
+                            MiddleName = "Gozon"
+                        },
+                        new
+                        {
                             ID = new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"),
-                            Address = "Dinalupihan, Orani, Bataan",
+                            Address = "Bacong,Hermosa, Bataan",
                             BirthDate = new DateTime(2023, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Raniel",
                             Gender = 1,
-                            LastName = "Morales",
-                            MiddleName = "Adan"
+                            LastName = "David",
+                            MiddleName = "Mallari"
                         });
                 });
 
@@ -230,14 +263,21 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
-                            ID = new Guid("272cd98f-37fd-4faf-8dd8-2e3af0e6522e"),
+                            ID = new Guid("de7ae52a-fafa-40c9-bf8e-c2c424d84c9a"),
+                            ConsultationRecordID = new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"),
+                            Description = " test 2",
+                            Tags = "test2"
+                        },
+                        new
+                        {
+                            ID = new Guid("1d8a2ca5-4966-4338-8fe3-bac743ca43a9"),
                             ConsultationRecordID = new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"),
                             Description = "prescriptions test 2",
                             Tags = "tabletest123"
                         },
                         new
                         {
-                            ID = new Guid("abc1424e-6137-4e59-a4f5-dbeb1dba3abb"),
+                            ID = new Guid("d7061a0a-ef96-4ceb-afd5-d0ee9d664483"),
                             ConsultationRecordID = new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"),
                             Description = "biogesic",
                             Tags = "123"
@@ -324,14 +364,27 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
+                            ID = new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                            Address = "Dinalupihan, Orani, Bataan",
+                            BirthDate = new DateTime(2001, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "joy@yahoo.com",
+                            FirstName = "Clarissa Joy",
+                            Gender = 1,
+                            LastName = "Gozon",
+                            MiddleName = "Flores",
+                            PatientID = new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"),
+                            RoleID = new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a")
+                        },
+                        new
+                        {
                             ID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"),
                             Address = "Dinalupihan, Orani, Bataan",
                             BirthDate = new DateTime(2001, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "renieldavid@yahoo.com",
                             FirstName = "Reniel",
                             Gender = 1,
-                            LastName = "David",
-                            MiddleName = "Adan",
+                            LastName = "Mallari",
+                            MiddleName = "David",
                             PatientID = new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"),
                             RoleID = new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a")
                         },
@@ -374,15 +427,39 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
-                            ID = new Guid("1224fb25-3e14-491c-88d4-cb5e2d1db718"),
+                            ID = new Guid("f6fa38be-a411-44fc-8f12-70573156926c"),
                             Key = "Password",
                             Type = "General",
-                            UserID = new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
-                            Value = "$2a$11$KDcgHW18d7G0DK.Jdv9eGOmgJTPJiSqT60kMf04vlrLDKFoLckSg2"
+                            UserID = new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                            Value = "$2a$11$F7K8Wf/6sj5dmAbJFBEH8.1hn27joAobykLVnxSF6yc8oiWTjOE72"
                         },
                         new
                         {
-                            ID = new Guid("bb27e77e-2f08-4cda-8931-6f46101655eb"),
+                            ID = new Guid("a7eecdb8-ea36-49cf-b4a7-1acb29d8e154"),
+                            Key = "IsActive",
+                            Type = "General",
+                            UserID = new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                            Value = "true"
+                        },
+                        new
+                        {
+                            ID = new Guid("ee9128f0-b7ee-4817-8430-e0f26b0efd19"),
+                            Key = "LoginRetries",
+                            Type = "General",
+                            UserID = new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"),
+                            Value = "0"
+                        },
+                        new
+                        {
+                            ID = new Guid("4a21f34e-0d7a-48d6-8683-6ec0a69e0751"),
+                            Key = "Password",
+                            Type = "General",
+                            UserID = new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
+                            Value = "$2a$11$iPggtI122dl9THq4c.yr8.Jg3n3XLEYTHjZE3P2cT9TKBMRsuhvj."
+                        },
+                        new
+                        {
+                            ID = new Guid("e5344484-03a5-42eb-a981-f1abfdc36162"),
                             Key = "IsActive",
                             Type = "General",
                             UserID = new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
@@ -390,7 +467,7 @@ namespace Capstonep2.Migrations
                         },
                         new
                         {
-                            ID = new Guid("891ecc49-4534-40d4-a580-f1e886465150"),
+                            ID = new Guid("e801130c-63e3-43bf-a670-3e2bb74fd7bc"),
                             Key = "LoginRetries",
                             Type = "General",
                             UserID = new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"),
@@ -398,15 +475,15 @@ namespace Capstonep2.Migrations
                         },
                         new
                         {
-                            ID = new Guid("fb0d503d-ddae-4b55-b576-d3ba4a37f3ca"),
+                            ID = new Guid("ac253c60-2f64-4a1e-bfe8-54e71f56d409"),
                             Key = "Password",
                             Type = "General",
                             UserID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"),
-                            Value = "$2a$11$cBdH6s154B2JDN3jraDTIubY.ymkpUnTPkpQVaybQr4zpxHISqpja"
+                            Value = "$2a$11$x33pRE1q76kUq6oHKf0Ht.dAt.c6klCHQv/NlmSKvTb197X/I9FdC"
                         },
                         new
                         {
-                            ID = new Guid("c929aa13-724d-4605-b5e2-60bd511f8def"),
+                            ID = new Guid("8b966ca5-c1ef-4bcd-99f2-2d4cb768b2e4"),
                             Key = "IsActive",
                             Type = "General",
                             UserID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"),
@@ -414,7 +491,7 @@ namespace Capstonep2.Migrations
                         },
                         new
                         {
-                            ID = new Guid("7f71e797-2001-4dd6-9db2-0fc67469108d"),
+                            ID = new Guid("7792fb23-9be4-4bea-8682-5e9788615bd9"),
                             Key = "LoginRetries",
                             Type = "General",
                             UserID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"),
@@ -445,15 +522,21 @@ namespace Capstonep2.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("19478ef2-b76f-41f1-8479-7ea2aee62c1c"),
+                            Id = new Guid("0e191be1-5960-422a-bd9b-1a2927be8e88"),
                             RoleID = new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
-                            UserID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398")
+                            UserID = new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95")
                         },
                         new
                         {
-                            Id = new Guid("41e6839e-4a92-493e-be83-4f098f72effd"),
+                            Id = new Guid("f8475805-48b9-448a-9565-649cd96ff1b1"),
                             RoleID = new Guid("54f00f70-72b8-4d34-a953-83321ff6b101"),
                             UserID = new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4")
+                        },
+                        new
+                        {
+                            Id = new Guid("a83a234b-3a5b-469b-af0e-523eff7b6f1a"),
+                            RoleID = new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a"),
+                            UserID = new Guid("7e5e4f74-9902-43da-9974-4b2a08814398")
                         });
                 });
 

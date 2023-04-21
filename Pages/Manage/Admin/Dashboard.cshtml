@@ -8,27 +8,28 @@
      <ul class="nav nav-tabs" role="tablist">
 
         <li class="nav-item">
-            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab" >Profile</button>
+            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab" >PROFILE</button>
         </li>
 
         <li class="nav-item">
-            <button href="#settings" class="nav-link" role="tab" data-bs-toggle="tab">Profile Settings</button>
+            <button href="#settings" class="nav-link" role="tab" data-bs-toggle="tab">PROFILE SETTING</button>
         </li>
 
         <li class="nav-item">
-            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab">Appointments</button>
+            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab">APPOINTMENT</button>
+        </li>
+
+        <li class="nav-item">
+            <button href="#patients" class="nav-link " role="tab" data-bs-toggle="tab">PATIENTS</button>
+        </li>
+        
+        <li class="nav-item">
+            <button href="#bago" class="nav-link " role="tab" data-bs-toggle="tab">ADD NEW USER</button>
         </li>
 
         
-        <li class="nav-item">
-            <button href="#bago" class="nav-link " role="tab" data-bs-toggle="tab">Add New User</button>
-        </li>
 
         
-
-        <li class="nav-item">
-            <button href="#patients" class="nav-link " role="tab" data-bs-toggle="tab">Patients</button>
-        </li>
 
 
 
@@ -172,7 +173,7 @@
                         <div class="card-header justify-content-center">
                             <h3 class="justify-content-center fw-bold">NEW USER</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body bg-mustardlite">
                             <form method="Post" asp-page-handler="Newuser">
                                 <div class="form-group">
                                     <label asp-for="View.NewFirstName">FirstName</label>
@@ -196,7 +197,7 @@
 
                                 <div class="form-group">
                                     <label asp-for="View.NewBirthDate">Birthdate</label>
-                                    <input type="datetime-local" class="form-control" placeholder="Enter abbreviation" asp-for="View.NewBirthDate">
+                                    <input type="date" class="form-control" placeholder="Enter abbreviation" asp-for="View.NewBirthDate">
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="View.NewAddress">Address</label>
@@ -234,7 +235,8 @@
                         <td>Name</td>
                         <td> Purpose Of Visit</td>
                         <td> Symptoms</td>
-                        <td> Date and Time</td>
+                        <td> Date</td>
+                        <td> Time</td>
                         <td>Status </td>
                         <td> Consultation</td>
                         <td> Actions </td>
@@ -242,15 +244,16 @@
                     </tr>
 
                 </thead>
-                <tbody>
+                <tbody class="bg-mustardlite">
                     @{
                         foreach (var appointment in Model?.View?.Appointments)
                         {
                             <tr>
 
-                                <td>@appointment?.Patient.FirstName @appointment?.Patient.LastName</td>                 
+                                <td>@appointment?.Patient?.FirstName @appointment?.Patient?.LastName</td>                 
                                 <td>@appointment?.PurposeOfVisit</td>
                                 <td>@appointment?.Symptom</td>
+                                <td>@appointment.StartTime.Value.ToString("dd/MM/yyyy")</td>
                                 <td>@appointment?.StartTime.Value.ToString("H:mm tt")-@appointment?.EndTime.Value.ToString("H:mm tt")</td>
                                 <td>@appointment?.Status</td>
 
@@ -278,14 +281,14 @@
                                                 <div class="modal fade" id="@string.Format("pfmodal{0}", appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
+                                                            <div class="modal-header bg-mustardlite">
                                                                 <h5 class="modal-title" id="exampleModalLabel">Consultation</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>                                                       
                                                             </div>
-                                                            <div class="modal-body">
+                                                            <div class="modal-body bg-mustardlite">
                                                                 <div class="col-auto ">
                                                                     <!-- Prescription and Finding -->
-                                                                    <div> @consultationRecord.ID </div>
+                                                                    
                                                                     @if(Model?.View?.Prescriptions != null)
                                                                     {
                                                                         @foreach(var prescription in Model?.View?.Prescriptions)
@@ -293,21 +296,27 @@
                                                                             if(prescription.ConsultationRecordID == consultationRecord.ID)
                                                                             {
                                                                                 <div class="card bg-mustardlite">
-                                                                                    <div class="card-header">
-                                                                                        <span>PRESCRIPTIONS</span>
+                                                                                    <div class="card-header bg-info">
+                                                                                        <span class="text-bg-info text-lg-center">PRESCRIPTIONS</span>
                                                                                     </div>
                                                                                     <div class="card-body">
-                                                                                        <div class="card-group">
+                                                                                            <div class="card-group">
+                                                                                            <p class="text-bg-dark"> DESCRIPTIONS: </p>
                                                                                             <span>@prescription.Description</span>
-                                                                                        </div>
-                                                                                        <div class="card-group">
+                                                                                            </div>
+
+                                                                                            <div class="card-group">
+                                                                                            <p class="text-bg-dark">TAGS:</p>
                                                                                             <span>@prescription.Tags</span>
-                                                                                        </div>
+                                                                                            </div>
+                                                                                        
                                                                                     </div>
                                                                                 </div>
                                                                             }
                                                                         }
                                                                     }
+
+
                                                                     @if (Model?.View?.Findings != null)
                                                                     {
                                                                         @foreach (var finding in Model?.View?.Findings)
@@ -315,14 +324,17 @@
                                                                             if (finding.ConsultationRecordID == consultationRecord.ID)
                                                                             {
                                                                                 <div class="card bg-mustardlite">
-                                                                                    <div class="card-header">
-                                                                                        <span>FINDINGS</span>
+                                                                                    <div class="card-header bg-info">
+                                                                                        <span class="text-bg-info">FINDINGS</span>
                                                                                     </div>
+
                                                                                     <div class="card-body">
                                                                                         <div class="card-group">
+                                                                                            <p class="text-bg-dark"> DESCRIPTIONS: </p>
                                                                                             <span>@finding.Description</span>
                                                                                         </div>
                                                                                         <div class="card-group">
+                                                                                            <p class="text-bg-dark">TAGS:</p>
                                                                                             <span>@finding.Tags</span>
                                                                                         </div>
                                                                                     </div>
@@ -334,9 +346,7 @@
                                                                     <!-- Prescription and Finding -->
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -347,19 +357,189 @@
                                     } 
                                     
                                    
-                                    </td>
-                                <td>
-                                    <a href="~" class="btn btn-info">
-                                        <i class="fa fa-pencil">Edit</i>
-
-                                    </a>
-                                    <a href="~" class="btn btn-danger">
-                                        <i class="fa fa-pencil">Delete</i>
-                                    </a>
-                                    <a href="~" class="btn btn-warning">
-                                        <i class="fa fa-pencil">Update Status</i>
-                                    </a>
                                 </td>
+
+
+                                <td>
+                                    @if (appointment.Status == Status.Pending || appointment.Status == Status.InProgress )
+                                    {
+
+
+                                        <!--Button For Modal Trigger-->
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@string.Format("#Editsmodal{0}", appointment.ID)">
+                                            <i class="fa fa-pencil">Edit Appointment</i>
+                                        </button>
+                                        <!--Button For Modal Trigger-->
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="@string.Format("Editsmodal{0}", appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content bg-mustardlite">
+                                                    <div class="modal-header bg-mustardlite">
+                                                        <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                                                    </div>
+                                                    <div class="modal-body bg-mustardlite">
+                                                        <div class="col-auto ">
+                                                          <form method="Post" asp-page-handler="EditApt">
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.FirstName">Symptoms</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter symptoms" asp-for="View.Symptom1" value="@appointment.Symptom">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.BirthDate">Date Time</label>
+                                                                    <input type="datetime-local" class="form-control" placeholder="Enter abbreviation" asp-for="View.StartTime1" value="@appointment.Symptom">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.SymptomID" value="@appointment.ID">
+                                                                </div>
+
+
+                                                                <div class="form-group alert-danger">
+                                                                    @Html.ValidationSummary()
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                    <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                                                                </div>
+                                                          </form>
+
+
+                                                        
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+                                       
+                                            <!--Button For Modal Trigger-->
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@string.Format("#Esmodal{0}", appointment.ID)">
+                                                <i class="fa fa-pencil">Edit Status</i>
+                                            </button>
+                                            <!--Button For Modal Trigger-->
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="@string.Format("Esmodal{0}", appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-content bg-mustardlite">
+                                                        <div class="modal-header bg-mustardlite">
+                                                            <h5 class="modal-title" id="exampleModalLabel">UPDATE </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                                                        </div>
+                                                    <div class="modal-body bg-mustardlite">
+                                                            <div class="col-auto ">
+                                                                <form method="Post" asp-page-handler="Editstatus">
+                                                                    <div class="form-group">
+                                                                        <label asp-for="View.Statusedit">Status</label>
+                                                                        <select asp-for="View.Statusedit" class="form-control" id="Sex">
+                                                                            <option value="0">Pending</option>
+                                                                            <option value="1">Cancelled</option>
+                                                                            <option value="2">InProgress</option>
+                                                                            <option value="3">NoShow</option>
+                                                                            <option value="4">Completed</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" class="form-control" placeholder="update" asp-for="View.SymptomID" value="@appointment.ID">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                                        <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                                                                    </div>
+
+
+
+                                                                </form>
+
+
+
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <!-- Modal -->
+
+
+                                    }
+
+                                    else if (appointment.Status == Status.Cancelled || appointment.Status == Status.NoShow)
+                                    {
+
+                                        <button type="button" class="btn btn-info" disabled>
+                                            <i class="fa fa-pencil">Edit Appointment</i>
+                                        </button>
+
+                                        <!--Button For Modal Trigger-->
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@string.Format("#Esmodal{0}", appointment.ID)">
+                                            <i class="fa fa-pencil">Edit Status</i>
+                                        </button>
+                                        <!--Button For Modal Trigger-->
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="@string.Format("Esmodal{0}", appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content bg-mustardlite">
+                                                    <div class="modal-header bg-mustardlite">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Consultation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                                                    </div>
+                                                    <div class="modal-body bg-mustardlite">
+                                                        <div class="col-auto ">
+                                                            <form method="Post" asp-page-handler="Editstatus">
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.Statusedit">Status</label>
+                                                                    <select asp-for="View.Statusedit" class="form-control" id="Sex">
+                                                                        <option value="0">Pending</option>
+                                                                        <option value="1">Cancelled</option>
+                                                                        
+                                                                        <option value="3">NoShow</option>
+                                                                        
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <input type="hidden" class="form-control" placeholder="update" asp-for="View.SymptomID" value="@appointment.ID">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                    <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                                                                </div>
+
+
+
+                                                            </form>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+                                    }
+
+                                    else
+                                    {
+
+                                        <button type="button" class="btn btn-info" disabled>
+                                            <i class="fa fa-pencil">Edit Appointment</i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-info" disabled>
+                                            <i class="fa fa-pencil">Edit Status</i>
+                                        </button>
+
+                                        
+
+                                    }
+
+                                    
+
+
+                                </td>
+                                
                                 
                             </tr>
                         }
@@ -369,7 +549,38 @@
             </table>
 
         </div>
+
+
+
         <div role="tabpanel" class="tab-pane" id="patients">
+
+            <div class="row">
+                <div class="search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" placeholder="Search" id="search">
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="">Sort By</label>
+                        <select class="form-control" id="sortBy" asp-for="View.Pasyente.SortBy">
+                            <option value="firstname">First Name</option>
+                            <option value="lastname">Last Name</option>
+                            <option value="middlename">Middle Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="">Sort Order</label>
+                        <select class="form-control" id="sortOrder" asp-for="View.Pasyente.SortOrder">
+                            <option value="1">Ascending</option>
+                            <option value="2">Descending</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
 
             <table class="table table-bordered">
                 <thead class="table-dark">
@@ -378,13 +589,13 @@
                         <td> Gender</td>
                         <td> Date of Birth</td>
                         <td> Address</td>
-                        <td> View</td>
+                        <td> Record</td>
                         <td> Actions</td>
 
                     </tr>
-
+                    
                 </thead>
-                <tbody>
+                <tbody class="bg-mustardlite">
                     @{
                         foreach (var patient in Model?.View?.Patients)
                         {
@@ -392,75 +603,18 @@
 
                             <tr>
                                 <td>@patient.LastName @patient.FirstName @patient.MiddleName </td>
-                                        <td>@patient.Gender</td>
-                                        <td>@patient.BirthDate</td>
-                                        <td>@patient.Address</td>
+                                <td>@patient.Gender</td>
+                                <td>@patient.BirthDate.Date.ToString("MM/dd/yyyy") </td>
+                                <td>@patient.Address</td>
 
 
 
                                 <td>
-                                  
-                  
-                                                <!--Button For Modal Trigger-->
-                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="@string.Format("#pfmodal{0}", patient.ID)">
-                                                    <i class="fa fa-pencil">View</i>
-                                                </button>
-                                                <!--Button For Modal Trigger-->
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="@string.Format("pfmodal{0}", patient.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-auto ">
-                                                        <table class="table table-bordered">
-                                                            <thead class="table-dark">
-                                                                <tr>
-                                                                    <td>Name</td>
-                                                                    <td> Purpose Of Visit</td>
-                                                                    <td> Symptoms</td>
-                                                                    <td> Date and Time</td>
-                                                                    <td>Status </td>
-                                                                    <td> Consultation</td>
-                                                                    
 
-                                                                </tr>
 
-                                                            </thead>
-                                                            <tbody>
-                                                                @{
-                                                                    foreach (var appointment in Model?.View?.Appointments)
-                                                                    {
-                                                                        <tr>
-
-                                                                            <td>@appointment?.Patient.FirstName @appointment?.Patient.LastName</td>
-                                                                            <td>@appointment?.PurposeOfVisit</td>
-                                                                            <td>@appointment?.Symptom</td>
-                                                                            <td>@appointment?.StartTime.Value.ToString("H:mm tt")-@appointment?.EndTime.Value.ToString("H:mm tt")</td>
-                                                                            <td>@appointment?.Status</td>
-
-                                                                            <td>
-
-                                                                            </td>
-                                                                            
-                                                                        </tr>
-                                                                    }
-                                                                }
-                                                            </tbody>
-
-                                                        </table>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Modal -->
+                                    <a href="~/manage/Admin/Viewpatient?id=@patient.ID" class="btn btn-primary">
+                                        <i class="fa fa-pencil">View</i>
+                                    </a>
                                             
                                         
                                     
@@ -480,65 +634,52 @@
                                         <div class="modal " id="@string.Format("editmodal{0}",patient.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                    <div class="modal-header bg-mustardlite">
+                                                        <h5 class="modal-title" id="exampleModalLabel">EDIT </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body bg-mustardlite">
                                                         <div class="col-auto">
 
-                                                            <div class="row justify-content-md-center">
-                                                                <div class="col-4">
-                                                                    <div class="card border border-dark bg-mustardlite">
-                                                                        <div class="card-header justify-content-center">
-                                                                            <h3 class="justify-content-center fw-bold">Edit Profile</h3>
-                                                                        </div>
-                                                                        <div class="card-body">
-                                                                        <form method="Post" asp-page-handler="Edit">
-                                                                                <div class="form-group">
-                                                                                    <label asp-for="View.FirstName">FirstName</label>
-                                                                                    <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditFirstName" value="@patient.FirstName">
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label asp-for="View.MiddleName">MiddleName</label>
-                                                                                    <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditMiddleName" value="@patient.MiddleName">
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label asp-for="View.LastName">LastName</label>
-                                                                                    <input type="text" class="form-control" placeholder="Enter LastName" asp-for="View.EditLastName" value="@patient.LastName">
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <label asp-for="View.Address">Address</label>
-                                                                                    <input type="text" class="form-control" placeholder="Enter Address" asp-for="View.EditAddress" value="@patient.Address">
-                                                                                </div>
-
-                                                                            <div class="form-group">
-                                                                                <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.EditPatientId" value="@patient.ID">
-                                                                            </div>
-
-
-                                                                                <div class="form-group alert-danger">
-                                                                                    @Html.ValidationSummary()
-                                                                                </div>
-                                                                                <div class="form-group">
-                                                                                    <button type="submit" class="btn btn-primary">Save</button>
-                                                                                    <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
-                                                                                </div>
-
-
-
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                        <form method="Post" asp-page-handler="Edit">
+                                                            <div class="form-group">
+                                                                <label asp-for="View.FirstName">FirstName</label>
+                                                                <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditFirstName" value="@patient.FirstName">
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label asp-for="View.MiddleName">MiddleName</label>
+                                                                <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditMiddleName" value="@patient.MiddleName">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label asp-for="View.LastName">LastName</label>
+                                                                <input type="text" class="form-control" placeholder="Enter LastName" asp-for="View.EditLastName" value="@patient.LastName">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label asp-for="View.Address">Address</label>
+                                                                <input type="text" class="form-control" placeholder="Enter Address" asp-for="View.EditAddress" value="@patient.Address">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.EditPatientId" value="@patient.ID">
+                                                            </div>
+
+
+                                                            <div class="form-group alert-danger">
+                                                                @Html.ValidationSummary()
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                                <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                                                            </div>
+
+
+
+                                                        </form>
 
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -558,6 +699,100 @@
                         </tbody>
 
             </table>
+
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @{
+                        if (Model?.View?.Pasyente?.PageIndex > 1)
+                        {
+                            <li class="page-item"><a class="page-link" href="/manage/patients?pageIndex=@(Model?.View?.Pasyente?.PageIndex-1)&pageSize=@(Model?.View?.Pasyente?.PageSize)&sortBy=@(Model?.View?.Pasyente?.SortBy)&sortOrder=@(Model?.View?.Pasyente?.SortOrder)">Previous</a></li>
+                        }
+
+                        <li class="page-item"><span class="page-link">page @Model?.View?.Pasyente?.PageIndex of @Model?.View?.Pasyente?.PageCount (@Model?.View?.Pasyente?.TotalRows total rows)</span></li>
+
+
+                        if (Model?.View?.Pasyente?.PageIndex < Model?.View?.Pasyente?.PageCount)
+                        {
+                            <li class="page-item"><a class="page-link" href="/manage/patients?pageIndex=@(Model?.View?.Pasyente?.PageIndex+1)&pageSize=@(Model?.View?.Pasyente?.PageSize)&sortBy=@(Model?.View?.Pasyente?.SortBy)&sortOrder=@(Model?.View?.Pasyente?.SortOrder)">Next</a></li>
+                        }
+                    }
+                </ul>
+            </nav>
+            
+            
+
+            <!--Button For Modal Trigger-->
+            <button type="button"  class="btn btn-info" data-bs-toggle="modal" data-bs-target="#npatient">
+                <i class="fa fa-pencil">ADD NEW PATIENT</i>
+            </button>
+            <!--Button For Modal Trigger-->
+
+            <div class="modal fade" id="npatient" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content bg-mustardlite">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Patient</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                        </div>
+
+                        <div class="modal-body bg-mustardlite">
+                            <div class="col-auto ">
+                                <form method="Post" asp-page-handler="Patient">
+                                    <div class="form-group">
+                                        <label asp-for="View.AddFirstName">FirstName</label>
+                                        <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.AddFirstName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddMiddleName">MiddleName</label>
+                                        <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.AddMiddleName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddLastName">LastName</label>
+                                        <input type="text" class="form-control" placeholder="Enter LastName" asp-for="View.AddLastName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddGender">Sex</label>
+                                        <select asp-for="View.Gender" class="form-control" id="Sex">
+                                            <option value="1">Male</option>
+                                            <option value="0">Female</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="View.AddBirthDate">Birthdate</label>
+                                        <input type="date" class="form-control" placeholder="Enter abbreviation" asp-for="View.AddBirthDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddAddress">Address</label>
+                                        <input type="text" class="form-control" placeholder="Enter Address" asp-for="View.AddAddress">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddEmail">EmailAddress</label>
+                                        <input type="text" class="form-control" placeholder="Enter Email" asp-for="View.AddEmail">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="View.AddPass">Password</label>
+                                        <input type="text" class="form-control" placeholder="Enter Password" asp-for="View.AddPass">
+                                    </div>
+                                    <div class="form-group alert-danger">
+                                        @Html.ValidationSummary()
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Sign up</button>
+                                        <a href="~/index" class="btn btn-secondary">Cancel</a>
+                                    </div>
+
+
+
+                                </form>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
      </div>
 
@@ -568,7 +803,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Appointment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -600,6 +835,22 @@
          var html5QrcodeScanner = new Html5QrcodeScanner(
              "reader", { fps: 10, qrbox: 250 });
              html5QrcodeScanner.render(onScanSuccess);
+  
+         // serg
+
+        $("#search").keyup(function (event) {
+            if (event.keyCode === 13) {
+                window.location = "/manage/admin/dashboard?keyword=" + $("#search").val();
+            }
+        });
+
+        $("#sortBy").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val();
+        });
+
+        $("#sortOrder").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val();
+        });
     </script>
 
 

@@ -9,18 +9,18 @@
     <ul class="nav nav-tabs" role="tablist">
 
         <li class="nav-item">
-            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab">Profile</button>
+            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab">PROFILE</button>
         </li>
 
         <li class="nav-item">
-            <button href="#settings" class="nav-link" role="tab" data-bs-toggle="tab">Profile Settings</button>
+            <button href="#settings" class="nav-link" role="tab" data-bs-toggle="tab">PROFILE SETTING</button>
         </li>
 
         <li class="nav-item">
-            <button href="#rec" class="nav-link " role="tab" data-bs-toggle="tab">Records</button>
+            <button href="#rec" class="nav-link " role="tab" data-bs-toggle="tab">RECORD</button>
         </li>
         <li class="nav-item">
-            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab">Request Appointment</button>
+            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab">REQUEST APPOINTMENT</button>
         </li>
 
 
@@ -61,7 +61,7 @@
                     <div id="printable">
                         <div id="qrcode"></div>
                     </div>
-                    <button id="qrprint">PRINT</button>
+                    <button id="rprint">PRINT</button>
                 </div>
 
 
@@ -147,7 +147,7 @@
                         <div class="card-header justify-content-center">
                             <h3 class="justify-content-center fw-bold">Create Appointment</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body bg-mustardlite">
                             <div class="container">
                                 <form method="Post" asp-page-handler="Appointment">
                                     <div class="form-group justify-content-center">
@@ -175,7 +175,7 @@
                                         <button type="submit" class=" col-5 btn btn-primary border border-light justify-content-center">Submit</button>
                                     </div>
                                     <div class="row align-content-center justify-content-center">
-                                        <a href="~/dashboard/patient/" class=" col-5 btn btn-primary border border-light justify-content-center">Cancel</a>
+                                        <a href="~/manage/dashboard/patient/" class=" col-5 btn btn-primary border border-light justify-content-center">Cancel</a>
                                     </div>
                                 </form>
                             </div>
@@ -198,7 +198,7 @@
                 </tr>
 
             </thead>
-            <tbody>
+                <tbody class="bg-mustardlite">
                 
                     @if (Model.View != null && Model.View.Appointments != null && Model.View.Appointments.Items.Count > 0)
                     {
@@ -207,7 +207,7 @@
                             foreach (var appointment in Model?.View?.Appointments?.Items)
                             {
                                 <tr>
-                                <td>@appointment.StartTime.Value.ToString("H:mm tt") - @appointment.EndTime.Value.ToString("H:mm tt") </td>
+                                <td> @appointment.StartTime.Value.ToString("dd/MM/yyyy")  @appointment.StartTime.Value.ToString("H:mm tt") - @appointment.EndTime.Value.ToString("H:mm tt") </td>
                                     <td>@appointment.PurposeOfVisit</td>
                                     <td>@appointment.Symptom</td>
                                     <td>@appointment.Status</td>
@@ -236,12 +236,12 @@
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="@string.Format("pfmodal{0}", appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                        <div class="modal-content bg-mustardlite">
+                                                            <div class="modal-header bg-mustardlite">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Findings And Prescriptions</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>                                                       
                                                             </div>
-                                                            <div class="modal-body">
+                                                            <div class="modal-body bg-mustardlite">
                                                                 <div class="col-auto ">
                                                                     <!-- Prescription and Finding -->
                                                                     @if(Model?.View?.Prescriptions != null){
@@ -255,11 +255,12 @@
                                                                                     </div>
                                                                                     <div class="card-body">
                                                                                         <div class="card-group">
-                                                                                            <span>@prescription.Description</span>
+                                                                                            <span> Tags:@prescription.Tags</span>
                                                                                         </div>
                                                                                         <div class="card-group">
-                                                                                            <span>@prescription.Tags</span>
+                                                                                            <span>  Descriptions:@prescription.Description</span>
                                                                                         </div>
+                                                                                        
                                                                                     </div>
                                                                                 </div>
                                                                             }
@@ -276,14 +277,17 @@
                                                                                         <span>FINDINGS</span>
                                                                                     </div>
                                                                                     <div class="card-body">
+                                                                                      
                                                                                         <div class="card-group">
-                                                                                            <span>@finding.Description</span>
+                                                                                            <span>Tags: @finding.Tags</span>
                                                                                         </div>
                                                                                         <div class="card-group">
-                                                                                            <span>@finding.Tags</span>
+                                                                                            <span> Descriptions: @finding.Description</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                
+                                                                                
                                                                             }
                                                                         }
                                                                     }
@@ -291,9 +295,7 @@
                                                                     <!-- Prescription and Finding -->
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -315,18 +317,18 @@
                                         <!--Modal-->
                                         <div class="modal " id="@string.Format("editmodal{0}",appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <div class="modal-content bg-mustardlite">
+                                                    <div class="modal-header ">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body bg-mustardlite">
                                                         <div class="col-auto">
 
                                                             <form method="Post" asp-page-handler="Edit">
                                                                 <div class="form-group">
-                                                                    <label asp-for="View.FirstName">FirstName</label>
+                                                                    <label asp-for="View.FirstName">Symptoms</label>
                                                                     <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.Symptom" value="@appointment.Symptom">
                                                                 </div>
                                                                 <div class="form-group">
@@ -349,9 +351,7 @@
 
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
 
@@ -366,19 +366,19 @@
                                         <div class="modal " id="@string.Format("cancelmodal{0}",appointment.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabe>Are you sure you want to cancel this appointment</h5>
+                                                    <div class="modal-header ">
+                                                        <h5 class="modal-title" id="exampleModalLabel>Are you sure you want to cancel this appointment</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body bg-mustardlite">
                                                         <div class="col-auto">
 
                                                               <form method="Post" asp-page-handler="Cancel">
                                                                 <div class="form-group">
                                                                     <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.StatusId" value="@appointment.ID">
                                                                 </div>
-                                                                <a href="~/manage/admin/dashboard" class="btn btn-secondary">No</a>
+                                                                <a href="~/manage/patient/dashboard" class="btn btn-secondary">No</a>
                                                                 <button type="submit" class="btn primary" >Yes</button>
                                                               </form>
                                                           
@@ -386,9 +386,7 @@
 
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <a href="link-here" class="btn btn-primary">Proceed</a>
-                                                </div>
+                                                
                                             </div>
                                         </div>
 
@@ -426,10 +424,9 @@
     <script>
 
         window.addEventListener("load", () => {
-            var qrc = new QRCode(document.getElementById("qrcode"), "https://localhost:25788/manage/Consultations?id=@this.User.Id()");
-        });
+            var qrc = new QRCode(document.getElementById("qrcode"), 'https://localhost:7141/manage/viewpatient?id=@ViewData["PatientID"]');
 
-        $("#qrprint").click(function () {
+        $("#rprint").click(function () {
 
 
             var prtContent = document.getElementById("printable");

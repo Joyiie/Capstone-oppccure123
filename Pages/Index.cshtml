@@ -15,7 +15,7 @@
                 <div class="container-fluid mx-1">
                     <form method="Post">
                         <div class="form-group justify-content-center">
-                            <label asp-for="View.Email">Enter Your Email</label>
+                            <label asp-for="View.Email">Email</label>
                             <input type="email" class="form-control" placeholder="Enter user name" asp-for="View.Email">
                         </div>
                         <div class="form-group">
@@ -26,10 +26,11 @@
                             @Html.ValidationSummary()
                         </div>
                         <div class="row align-content-center justify-content-center">
-                            <button type="submit" class=" col-5 btn btn-primary border border-light justify-content-center">Login</button>
+                            <button type="submit" class=" col-5 btn btn-info border border-light justify-content-center">Log in</button>
                         </div>
+                        
                         <div class="row align-content-center justify-content-center">
-                            <a href="~/manage/Account/SignUp" class=" col-5 btn btn-primary border border-light justify-content-center">Sign Up</a>
+                            <p class="justify-content-center">Don't Have an account? <a href="~/manage/Account/SignUp" class="justify-content-center ">Sign Up</a></p>
                         </div>
                     </form>
                 </div>

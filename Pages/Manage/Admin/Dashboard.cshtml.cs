@@ -30,12 +30,73 @@ namespace Capstonep2.Pages.Manage.Admin
             View = View ?? new ViewModel();
         }
 
-        public IActionResult OnGet(Guid? id = null, Guid? crid = null)
+        public IActionResult OnGet(Guid? id = null, Guid? crid = null, int? pageIndex = 1, int? pageSize = 10, string? sortBy = "", SortOrder sortOrder = SortOrder.Ascending, string? keyword = "")
         {
             Guid? userId = User.Id();
             var user = _context?.Users?.Where(a => a.ID == id).FirstOrDefault();
 
-            
+            var query = _context.Patients.Where(a => a.ID != null).AsQueryable();
+
+           
+
+            var skip = (int)((pageIndex - 1) * pageSize);
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(a =>
+                            a.FirstName != null && a.FirstName.ToLower().Contains(keyword.ToLower())
+                        || a.LastName != null && a.LastName.ToLower().Contains(keyword.ToLower())
+                        || a.MiddleName != null && a.MiddleName.ToLower().Contains(keyword.ToLower())
+                );
+            }
+
+            var totalRows = query.Count();
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy.ToLower() == "firstname" && sortOrder == SortOrder.Ascending)
+                {
+                    query = query.OrderBy(a => a.FirstName);
+                }
+                else if (sortBy.ToLower() == "middlename" && sortOrder == SortOrder.Descending)
+                {
+                    query = query.OrderByDescending(a => a.MiddleName);
+                }
+                else if (sortBy.ToLower() == "lastname" && sortOrder == SortOrder.Ascending)
+                {
+                    query = query.OrderBy(a => a.LastName);
+                }
+                else if (sortBy.ToLower() == "lastname" && sortOrder == SortOrder.Descending)
+                {
+                    query = query.OrderByDescending(a => a.Address);
+                }
+                else if (sortBy.ToLower() == "address" && sortOrder == SortOrder.Ascending)
+                {
+                    query = _context.Patients.OrderBy(a => a.Address);
+                }
+                else if (sortBy.ToLower() == "address" && sortOrder == SortOrder.Descending)
+                {
+                    query = query.OrderByDescending(a => a.Address);
+                }
+            }
+            var pasyente = query
+                           .Skip(skip)
+                           .Take((int)pageSize)
+                           .ToList();
+
+            View.Pasyente = new Paged<Infrastructure.Domain.Models.Patient>()
+            {
+                Items = pasyente,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRows = totalRows,
+                SortBy = sortBy,
+                SortOrder = sortOrder,
+                Keyword = keyword
+
+            };
+           
+
 
 
 
@@ -56,13 +117,18 @@ namespace Capstonep2.Pages.Manage.Admin
                     MiddleName = a.MiddleName,
                 }).FirstOrDefault();
 
+
+
+
+
             ViewData["address"] = profile.Address;
-            ViewData["birthdate"] = profile.BirthDate;
+            ViewData["birthdate"] = profile.BirthDate.ToString("dd/MM/yyyy");
             ViewData["email"] = profile.Email;
             ViewData["firstname"] = profile.FirstName;
             ViewData["middlename"] = profile.MiddleName;
             ViewData["lastname"] = profile.LastName;
             ViewData["gender"] = profile.Gender;
+            
 
             View = profile;
             var appointments = _context?.Appointments?.Include(a => a.Patient).ToList();
@@ -252,6 +318,8 @@ namespace Capstonep2.Pages.Manage.Admin
         }
 
 
+
+
         public IActionResult OnPostNewuser()
         {
             if (string.IsNullOrEmpty(View.NewFirstName))
@@ -371,10 +439,202 @@ namespace Capstonep2.Pages.Manage.Admin
 
             return Page();
         }
+        public IActionResult OnPostEditApt()
+        {
+            if (string.IsNullOrEmpty(View.Symptom1))
+            {
+                ModelState.AddModelError("", "First name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+
+
+
+
+            var symptom = _context?.Appointments?.FirstOrDefault(a => a.ID == Guid.Parse(View.SymptomID));
+
+            if (symptom != null)
+            {
+
+                symptom.Symptom = View.Symptom1;
+                symptom.StartTime = View.StartTime1;
+
+
+                _context?.Appointments?.Update(symptom);
+
+                _context?.SaveChanges();
+
+                return RedirectPermanent("~/manage/admin/dashboard");
+            }
+
+
+
+
+
+
+
+            return RedirectPermanent("/manage/admin/dashboard");
+        }
+
+        public IActionResult OnPostEditstatus()
+        {
+            if (!Enum.IsDefined(typeof(Status), View.Statusedit))
+            {
+                ModelState.AddModelError("", " status cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+
+
+
+
+            var symptom = _context?.Appointments?.FirstOrDefault(a => a.ID == Guid.Parse(View.SymptomID));
+
+            if (symptom != null)
+            {
+
+                symptom.Status = View.Statusedit;
+                
+
+
+                _context?.Appointments?.Update(symptom);
+
+                _context?.SaveChanges();
+
+                return RedirectPermanent("~/manage/admin/dashboard");
+            }
+
+
+
+
+
+
+
+            return RedirectPermanent("/manage/admin/dashboard");
+        }
+
+        public IActionResult OnPostPatient()
+        {
+            if (string.IsNullOrEmpty(View.AddFirstName))
+            {
+                ModelState.AddModelError("", "First name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+
+            if (string.IsNullOrEmpty(View.AddMiddleName))
+            {
+                ModelState.AddModelError("", "Middle name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            if (string.IsNullOrEmpty(View.AddLastName))
+            {
+                ModelState.AddModelError("", "Last name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            if (!Enum.IsDefined(typeof(Gender), View.AddGender))
+            {
+                ModelState.AddModelError("", "Sex name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            if (DateTime.MinValue >= View.AddBirthDate)
+            {
+                ModelState.AddModelError("", "Birthdate name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+
+            if (string.IsNullOrEmpty(View.AddAddress))
+            {
+                ModelState.AddModelError("", "Address name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            if (string.IsNullOrEmpty(View.AddEmail))
+            {
+                ModelState.AddModelError("", "Address name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            if (string.IsNullOrEmpty(View.AddPass))
+            {
+                ModelState.AddModelError("", "Address name cannot be blank.");
+                return RedirectPermanent("/manage/admin/dashboard");
+            }
+            Guid patientGuid = Guid.NewGuid();
+            Guid userGuid = Guid.NewGuid();
+            User user = new User()
+            {
+                ID = userGuid,
+                PatientID = patientGuid,
+                FirstName = View.AddFirstName,
+                MiddleName = View.AddMiddleName,
+                LastName = View.AddLastName,
+                Gender = View.AddGender,
+                BirthDate = View.AddBirthDate,
+                Address = View.AddAddress,
+                Email = View.AddEmail,
+                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a")
+            };
+            List<UserLogin> userLogins = new List<UserLogin>();
+            userLogins.AddRange(new List<UserLogin>()
+            {
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =userGuid,
+                    Type = "General",
+                    Key = "Password",
+                    Value = BCrypt.Net.BCrypt.EnhancedHashPassword(View.AddPass)
+                },
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =userGuid,
+                    Type = "General",
+                    Key = "IsActive",
+                    Value = "true"
+                },
+                new UserLogin()
+                {
+                    ID = Guid.NewGuid(),
+                    UserID =userGuid,
+                    Type = "General",
+                    Key = "LoginRetries",
+                    Value = "0"
+                }
+            });
+            Infrastructure.Domain.Models.Patient patient = new Infrastructure.Domain.Models.Patient()
+            {
+
+                ID = patientGuid,
+                FirstName = View.AddFirstName,
+                MiddleName = View.AddMiddleName,
+                LastName = View.AddLastName,
+                Gender = View.AddGender,
+                BirthDate = View.AddBirthDate,
+                Address = View.AddAddress
+
+            };
+            UserRole userRole = new UserRole()
+            {
+                Id = Guid.NewGuid(),
+                UserID = userGuid,
+                RoleID = Guid.Parse("2afa881f-e519-4e67-a841-e4a2630e8a2a")
+
+            };
+
+
+            _context?.Users?.Add(user);
+            _context?.Patients?.Add(patient);
+            _context?.UserLogins?.AddRange(userLogins);
+            _context?.UserRoles?.Add(userRole);
+            _context?.SaveChanges();
+
+            return RedirectPermanent("/manage/admin/dashboard");
+        }
+
 
 
         public class ViewModel : UserViewModel
         {
+
+
+
             public string? CurrentPass { get; set; }
             public string? NewPass { get; set; }
             public string? RetypedPassword { get; set; }
@@ -382,6 +642,7 @@ namespace Capstonep2.Pages.Manage.Admin
 
             [ForeignKey("PatientID")]
             public Infrastructure.Domain.Models.Patient? Patient { get; set; }
+            public Paged<Infrastructure.Domain.Models.Patient>? Pasyente { get; set; }
 
 
             public string? NewFirstName { get; set;}
@@ -399,10 +660,14 @@ namespace Capstonep2.Pages.Manage.Admin
             public List<Finding>? Findings { get; set; }
             public List<Prescription>? Prescriptions { get; set; }
 
+            public string? Symptom1 { get;set; }
+            public DateTime? StartTime1 { get; set; }
 
-         
+            public Infrastructure.Domain.Models.Enums.Status Statusedit  { get; set; }
+
             public string? SymptomID { get; set; }
             public string? StatusId { get; set; }
+
 
 
 
@@ -412,6 +677,19 @@ namespace Capstonep2.Pages.Manage.Admin
             public string? EditMiddleName { get; set; }
             public string? EditAddress { get; set; }
             public string? EditPatientId { get; set; }
+
+
+            //new patient
+            public string? AddFirstName { get; set; }
+            public string? AddLastName { get; set; }
+            public string? AddMiddleName { get; set; }
+            public string? AddAddress { get; set; }
+            public string? AddEmail { get; set; }
+            public string? AddPass { get; set; }
+            public DateTime AddBirthDate { get; set; }
+            public Infrastructure.Domain.Models.Enums.Gender AddGender { get; set; }
+
+
         }
     }
 }

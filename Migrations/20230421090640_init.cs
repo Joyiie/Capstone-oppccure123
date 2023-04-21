@@ -226,7 +226,11 @@ namespace Capstonep2.Migrations
             migrationBuilder.InsertData(
                 table: "Patients",
                 columns: new[] { "ID", "Address", "BirthDate", "FirstName", "Gender", "LastName", "MiddleName" },
-                values: new object[] { new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), "Dinalupihan, Orani, Bataan", new DateTime(2023, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Raniel", 1, "Morales", "Adan" });
+                values: new object[,]
+                {
+                    { new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"), "Luakan,Dinalupihan, Bataan", new DateTime(2023, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Clarissa Joy", 1, "Flores", "Gozon" },
+                    { new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), "Bacong,Hermosa, Bataan", new DateTime(2023, 3, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Raniel", 1, "David", "Mallari" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -242,12 +246,15 @@ namespace Capstonep2.Migrations
                 columns: new[] { "ID", "Key", "Type", "UserID", "Value" },
                 values: new object[,]
                 {
-                    { new Guid("1224fb25-3e14-491c-88d4-cb5e2d1db718"), "Password", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "$2a$11$KDcgHW18d7G0DK.Jdv9eGOmgJTPJiSqT60kMf04vlrLDKFoLckSg2" },
-                    { new Guid("7f71e797-2001-4dd6-9db2-0fc67469108d"), "LoginRetries", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "0" },
-                    { new Guid("891ecc49-4534-40d4-a580-f1e886465150"), "LoginRetries", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "0" },
-                    { new Guid("bb27e77e-2f08-4cda-8931-6f46101655eb"), "IsActive", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "true" },
-                    { new Guid("c929aa13-724d-4605-b5e2-60bd511f8def"), "IsActive", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "true" },
-                    { new Guid("fb0d503d-ddae-4b55-b576-d3ba4a37f3ca"), "Password", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "$2a$11$cBdH6s154B2JDN3jraDTIubY.ymkpUnTPkpQVaybQr4zpxHISqpja" }
+                    { new Guid("4a21f34e-0d7a-48d6-8683-6ec0a69e0751"), "Password", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "$2a$11$iPggtI122dl9THq4c.yr8.Jg3n3XLEYTHjZE3P2cT9TKBMRsuhvj." },
+                    { new Guid("7792fb23-9be4-4bea-8682-5e9788615bd9"), "LoginRetries", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "0" },
+                    { new Guid("8b966ca5-c1ef-4bcd-99f2-2d4cb768b2e4"), "IsActive", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "true" },
+                    { new Guid("a7eecdb8-ea36-49cf-b4a7-1acb29d8e154"), "IsActive", "General", new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"), "true" },
+                    { new Guid("ac253c60-2f64-4a1e-bfe8-54e71f56d409"), "Password", "General", new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "$2a$11$x33pRE1q76kUq6oHKf0Ht.dAt.c6klCHQv/NlmSKvTb197X/I9FdC" },
+                    { new Guid("e5344484-03a5-42eb-a981-f1abfdc36162"), "IsActive", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "true" },
+                    { new Guid("e801130c-63e3-43bf-a670-3e2bb74fd7bc"), "LoginRetries", "General", new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "0" },
+                    { new Guid("ee9128f0-b7ee-4817-8430-e0f26b0efd19"), "LoginRetries", "General", new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"), "0" },
+                    { new Guid("f6fa38be-a411-44fc-8f12-70573156926c"), "Password", "General", new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"), "$2a$11$F7K8Wf/6sj5dmAbJFBEH8.1hn27joAobykLVnxSF6yc8oiWTjOE72" }
                 });
 
             migrationBuilder.InsertData(
@@ -257,6 +264,7 @@ namespace Capstonep2.Migrations
                 {
                     { new Guid("20f20659-d4e3-466e-b2df-e6a6b1f62fab"), new DateTime(2022, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), 0, new DateTime(2022, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified), 4, "Red Eyes" },
                     { new Guid("2222ed0f-aaea-45f3-8a72-f0ee3ed23a22"), new DateTime(2022, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), 0, new DateTime(2022, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified), 3, "Swelling" },
+                    { new Guid("3ce371f9-dc79-4623-b84f-0b2fe7c99962"), new DateTime(2023, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified), new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"), 1, new DateTime(2023, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified), 4, "Light Sensitivity" },
                     { new Guid("861c579e-bb80-4dea-b8f2-4b189cb6a362"), new DateTime(2022, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), 0, new DateTime(2022, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified), 1, "Headache" },
                     { new Guid("c7d431a6-579b-4841-8629-2bbcb79a5e15"), new DateTime(2023, 2, 12, 12, 0, 0, 0, DateTimeKind.Unspecified), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), 2, new DateTime(2023, 2, 12, 11, 30, 0, 0, DateTimeKind.Unspecified), 0, "Light Sensitivity" }
                 });
@@ -267,7 +275,8 @@ namespace Capstonep2.Migrations
                 values: new object[,]
                 {
                     { new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4"), "Dinalupihan, Orani , Bataan", new DateTime(2002, 2, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "Janedavid@yahoo.com", "Jane", 0, "David", "Adan", null, new Guid("54f00f70-72b8-4d34-a953-83321ff6b101") },
-                    { new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "Dinalupihan, Orani, Bataan", new DateTime(2001, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "renieldavid@yahoo.com", "Reniel", 1, "David", "Adan", new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a") }
+                    { new Guid("7e5e4f74-9902-43da-9974-4b2a08814398"), "Dinalupihan, Orani, Bataan", new DateTime(2001, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "renieldavid@yahoo.com", "Reniel", 1, "Mallari", "David", new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a") },
+                    { new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95"), "Dinalupihan, Orani, Bataan", new DateTime(2001, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "joy@yahoo.com", "Clarissa Joy", 1, "Gozon", "Flores", new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a") }
                 });
 
             migrationBuilder.InsertData(
@@ -276,7 +285,8 @@ namespace Capstonep2.Migrations
                 values: new object[,]
                 {
                     { new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"), new Guid("c7d431a6-579b-4841-8629-2bbcb79a5e15"), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a") },
-                    { new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), new Guid("20f20659-d4e3-466e-b2df-e6a6b1f62fab"), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a") }
+                    { new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), new Guid("20f20659-d4e3-466e-b2df-e6a6b1f62fab"), new Guid("8664a4bd-0ec6-4aaa-83e6-7d2bd0315b5a") },
+                    { new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"), new Guid("3ce371f9-dc79-4623-b84f-0b2fe7c99962"), new Guid("5a7e7bc3-8816-41df-b44d-eeb60ae99b5b") }
                 });
 
             migrationBuilder.InsertData(
@@ -284,8 +294,9 @@ namespace Capstonep2.Migrations
                 columns: new[] { "Id", "RoleID", "UserID" },
                 values: new object[,]
                 {
-                    { new Guid("19478ef2-b76f-41f1-8479-7ea2aee62c1c"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a"), new Guid("7e5e4f74-9902-43da-9974-4b2a08814398") },
-                    { new Guid("41e6839e-4a92-493e-be83-4f098f72effd"), new Guid("54f00f70-72b8-4d34-a953-83321ff6b101"), new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4") }
+                    { new Guid("0e191be1-5960-422a-bd9b-1a2927be8e88"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a"), new Guid("d7dbd16f-1c71-4415-a147-22a2b428bf95") },
+                    { new Guid("a83a234b-3a5b-469b-af0e-523eff7b6f1a"), new Guid("2afa881f-e519-4e67-a841-e4a2630e8a2a"), new Guid("7e5e4f74-9902-43da-9974-4b2a08814398") },
+                    { new Guid("f8475805-48b9-448a-9565-649cd96ff1b1"), new Guid("54f00f70-72b8-4d34-a953-83321ff6b101"), new Guid("00acfb7f-6c90-459a-b53f-bf73ddac85b4") }
                 });
 
             migrationBuilder.InsertData(
@@ -293,8 +304,9 @@ namespace Capstonep2.Migrations
                 columns: new[] { "ID", "ConsultationRecordID", "Description", "Tags" },
                 values: new object[,]
                 {
-                    { new Guid("029e7d21-268b-4153-ae4d-edc0361e23e6"), new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), "findings test 1", "testtable123" },
-                    { new Guid("c1f141ca-22d8-4481-9a23-6fb1bae6bd65"), new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"), "sore eyes", "123" }
+                    { new Guid("2ba4301b-e40f-46e3-af07-eb60c7331f26"), new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), "findings test 1", "testtable123" },
+                    { new Guid("6ac28027-f3a3-4bca-8a96-4a0e7046286e"), new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"), "test2", "test2" },
+                    { new Guid("7ee88ccf-d455-46f9-bba9-6b8d3a8abe82"), new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"), "sore eyes", "123" }
                 });
 
             migrationBuilder.InsertData(
@@ -302,8 +314,9 @@ namespace Capstonep2.Migrations
                 columns: new[] { "ID", "ConsultationRecordID", "Description", "Tags" },
                 values: new object[,]
                 {
-                    { new Guid("272cd98f-37fd-4faf-8dd8-2e3af0e6522e"), new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), "prescriptions test 2", "tabletest123" },
-                    { new Guid("abc1424e-6137-4e59-a4f5-dbeb1dba3abb"), new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"), "biogesic", "123" }
+                    { new Guid("1d8a2ca5-4966-4338-8fe3-bac743ca43a9"), new Guid("73ec06ac-56aa-453a-a29d-447691d51cd9"), "prescriptions test 2", "tabletest123" },
+                    { new Guid("d7061a0a-ef96-4ceb-afd5-d0ee9d664483"), new Guid("0c096359-c9ef-4f37-9c37-47b7bf247746"), "biogesic", "123" },
+                    { new Guid("de7ae52a-fafa-40c9-bf8e-c2c424d84c9a"), new Guid("a11b823f-8eff-4d89-abdc-8efa8f28291c"), " test 2", "test2" }
                 });
 
             migrationBuilder.CreateIndex(

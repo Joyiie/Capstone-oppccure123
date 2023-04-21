@@ -112,13 +112,13 @@ namespace Capstonep2.Pages.Manage.Patient
 
 
             ViewData["address"]      = user.Address;
-            ViewData["birthdate"]    = user.BirthDate;
+            ViewData["birthdate"]    = user.BirthDate.ToString("dd/MM/yyyy");
             ViewData["email"]        = user.Email;
             ViewData["firstname"]    = user.FirstName;
             ViewData["middlename"]   = user.MiddleName;
             ViewData["lastname"]     = user.LastName;
             ViewData["gender"]       = user.Gender;
-
+            ViewData["PatientID"]    = user.PatientID.ToString();
             
             return Page();
         }
