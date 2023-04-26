@@ -5,10 +5,10 @@
 }
  <div class="col-auto">
      <br/>
-     <ul class="nav nav-tabs" role="tablist">
+    <ul class="nav nav-tabs" role="tablist" id="myTab">
 
         <li class="nav-item">
-            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab" >PROFILE</button>
+            <button href="#profile" class="nav-link active" role="tab" data-bs-toggle="tab">PROFILE</button>
         </li>
 
         <li class="nav-item">
@@ -16,22 +16,16 @@
         </li>
 
         <li class="nav-item">
-            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab">APPOINTMENT</button>
+            <button href="#appts" class="nav-link " role="tab" data-bs-toggle="tab" id="Navappts">APPOINTMENT</button>
         </li>
 
         <li class="nav-item">
-            <button href="#patients" class="nav-link " role="tab" data-bs-toggle="tab">PATIENTS</button>
+            <button href="#patients" class="nav-link " role="tab" data-bs-toggle="tab" id="Navpatients">PATIENTS</button>
         </li>
         
         <li class="nav-item">
             <button href="#bago" class="nav-link " role="tab" data-bs-toggle="tab">ADD NEW USER</button>
         </li>
-
-        
-
-        
-
-
 
      </ul>
 
@@ -229,10 +223,46 @@
 
         </div>
         <div role="tabpanel" class="tab-pane" id="appts">
+            <div class="row">
+                <div class="search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" placeholder="Search" id="aptssearch">
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="">Sort By Name</label>
+                        <select class="form-control" id="aptssortBy" asp-for="View.Appts.SortBy">
+                            <option value="first">First Name</option>
+                            <option value="midllename">Middle Name</option>
+                            <option value="lastname">Last Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="">Filter by Status</label>
+                        <select class="form-control" id="aptsfilterBy" asp-for="View.StatusFilter">
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="noshow">Noshow</option>
+                            <option value="cancelled">Cancelled</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="">Filter by Date</label>
+                        <input type="date" class="form-control" id="aptsfilterDate" placeholder="Select date">
+                    </div>
+                </div>
+            </div>
+
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
-                        <td>Name</td>
+                        <td>Full Name</td>
                         <td> Purpose Of Visit</td>
                         <td> Symptoms</td>
                         <td> Date</td>
@@ -246,11 +276,11 @@
                 </thead>
                 <tbody class="bg-mustardlite">
                     @{
-                        foreach (var appointment in Model?.View?.Appointments)
+                        foreach (var appointment in Model?.View?.Appts.Items)
                         {
                             <tr>
 
-                                <td>@appointment?.Patient?.FirstName @appointment?.Patient?.LastName</td>                 
+                                <td>@appointment?.Patient?.FirstName @appointment?.Patient?.MiddleName @appointment?.Patient?.LastName </td>    
                                 <td>@appointment?.PurposeOfVisit</td>
                                 <td>@appointment?.Symptom</td>
                                 <td>@appointment.StartTime.Value.ToString("dd/MM/yyyy")</td>
@@ -585,7 +615,7 @@
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
-                        <td> Full Name</td>   
+                        <td>Full Name</td>   
                         <td> Gender</td>
                         <td> Date of Birth</td>
                         <td> Address</td>
@@ -597,104 +627,107 @@
                 </thead>
                 <tbody class="bg-mustardlite">
                     @{
-                        foreach (var patient in Model?.View?.Patients)
+                        if(Model.View.Pasyente != null && Model.View.Pasyente.Items != null && Model.View.Pasyente.Items.Count > 0)
                         {
+                            foreach (var patient in Model?.View?.Pasyente?.Items)
+                            {
 
 
-                            <tr>
-                                <td>@patient.LastName @patient.FirstName @patient.MiddleName </td>
-                                <td>@patient.Gender</td>
-                                <td>@patient.BirthDate.Date.ToString("MM/dd/yyyy") </td>
-                                <td>@patient.Address</td>
+                                <tr>
+                                    <td>@patient.FirstName @patient.MiddleName @patient.LastName </td>
+                                    <td>@patient.Gender</td>
+                                    <td>@patient.BirthDate.Date.ToString("MM/dd/yyyy") </td>
+                                    <td>@patient.Address</td>
 
 
 
-                                <td>
+                                    <td>
 
 
-                                    <a href="~/manage/Admin/Viewpatient?id=@patient.ID" class="btn btn-primary">
-                                        <i class="fa fa-pencil">View</i>
-                                    </a>
+                                        <a href="~/manage/Admin/Viewpatient?id=@patient.ID" class="btn btn-primary">
+                                            <i class="fa fa-pencil">View</i>
+                                        </a>
+                                                
                                             
                                         
-                                    
-                                </td>
+                                    </td>
 
-                                <td>
-                                   
-                                    
-
-
-                                        <!--Button For Modal Trigger-->
-                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="@string.Format("#editmodal{0}", patient.ID)">
-                                            <i class="fa fa-pencil">Edit</i>
-                                        </button>
-                                        <!--Button For Modal Trigger-->
-                                        <!--Modal-->
-                                        <div class="modal " id="@string.Format("editmodal{0}",patient.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header bg-mustardlite">
-                                                        <h5 class="modal-title" id="exampleModalLabel">EDIT </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                                                    </div>
-
-                                                    <div class="modal-body bg-mustardlite">
-                                                        <div class="col-auto">
-
-                                                        <form method="Post" asp-page-handler="Edit">
-                                                            <div class="form-group">
-                                                                <label asp-for="View.FirstName">FirstName</label>
-                                                                <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditFirstName" value="@patient.FirstName">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label asp-for="View.MiddleName">MiddleName</label>
-                                                                <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditMiddleName" value="@patient.MiddleName">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label asp-for="View.LastName">LastName</label>
-                                                                <input type="text" class="form-control" placeholder="Enter LastName" asp-for="View.EditLastName" value="@patient.LastName">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label asp-for="View.Address">Address</label>
-                                                                <input type="text" class="form-control" placeholder="Enter Address" asp-for="View.EditAddress" value="@patient.Address">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.EditPatientId" value="@patient.ID">
-                                                            </div>
+                                    <td>
+                                       
+                                        
 
 
-                                                            <div class="form-group alert-danger">
-                                                                @Html.ValidationSummary()
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <button type="submit" class="btn btn-primary">Save</button>
-                                                                <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
-                                                            </div>
-
-
-
-                                                        </form>
-
+                                            <!--Button For Modal Trigger-->
+                                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="@string.Format("#editmodal{0}", patient.ID)">
+                                                <i class="fa fa-pencil">Edit</i>
+                                            </button>
+                                            <!--Button For Modal Trigger-->
+                                            <!--Modal-->
+                                            <div class="modal " id="@string.Format("editmodal{0}",patient.ID)" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-mustardlite">
+                                                            <h5 class="modal-title" id="exampleModalLabel">EDIT </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                                                         </div>
+
+                                                        <div class="modal-body bg-mustardlite">
+                                                            <div class="col-auto">
+
+                                                            <form method="Post" asp-page-handler="Edit">
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.FirstName">FirstName</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditFirstName" value="@patient.FirstName">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.MiddleName">MiddleName</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter FirstName" asp-for="View.EditMiddleName" value="@patient.MiddleName">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.LastName">LastName</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter LastName" asp-for="View.EditLastName" value="@patient.LastName">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label asp-for="View.Address">Address</label>
+                                                                    <input type="text" class="form-control" placeholder="Enter Address" asp-for="View.EditAddress" value="@patient.Address">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input type="hidden" class="form-control" placeholder="Enter Address" asp-for="View.EditPatientId" value="@patient.ID">
+                                                                </div>
+
+
+                                                                <div class="form-group alert-danger">
+                                                                    @Html.ValidationSummary()
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                                    <a href="~/manage/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                                                                </div>
+
+
+
+                                                            </form>
+
+                                                            </div>
+                                                        </div>
+                                                       
                                                     </div>
-                                                   
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!--Modal-->
+                                            <!--Modal-->
 
 
 
 
 
-                                       
+                                           
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }
                         }
-                        }
+                      }
 
                         </tbody>
 
@@ -835,21 +868,59 @@
          var html5QrcodeScanner = new Html5QrcodeScanner(
              "reader", { fps: 10, qrbox: 250 });
              html5QrcodeScanner.render(onScanSuccess);
-  
-         // serg
+    </script>
 
-        $("#search").keyup(function (event) {
-            if (event.keyCode === 13) {
-                window.location = "/manage/admin/dashboard?keyword=" + $("#search").val();
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var activeTab = url.substring(url.indexOf("#") + 1);
+            if(activeTab == "patients" || activeTab == "appts"){
+                $(".tab-pane").removeClass("active");
+                $("#" + activeTab).addClass("active");
+                $(".nav-link").removeClass("active");
+                $("#Nav" + activeTab).addClass("active");
+                $('a[href="' + activeTab + '"]').tab('show')
+
             }
         });
 
-        $("#sortBy").change(function () {
-            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val();
+
+        $("#search").keyup(function (event) {
+            if (event.keyCode === 13) {
+                window.location = "/manage/admin/dashboard?keyword=" + $("#search").val() + "#patients";
+            }
         });
 
+        $("#aptssearch").keyup(function (event) {
+            if (event.keyCode === 13) {
+                window.location = "/manage/admin/dashboard?keyword=" + $("#aptssearch").val() + "#appts";
+            }
+        });
+
+
+        $("#sortBy").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val() + "&status=" + $("#aptsfilterBy").val() + "&date=" + $("#aptsfilterDate").val() + "#patients";
+        });
         $("#sortOrder").change(function () {
-            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val();
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#sortBy").val() + "&sortOrder=" + $("#sortOrder").val() + "&status=" + $("#aptsfilterBy").val() + "&date=" + $("#aptsfilterDate").val() + "#patients";
+        });
+        //apts
+
+        $("#aptssortBy").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#aptssortBy").val() + "&sortOrder=" + $("#sortOrder").val() + "&status=" + $("#aptsfilterBy").val() + "&date=" + $("#aptsfilterDate").val() + "#appts";
+        });
+       
+        $("#aptssortOrder").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#aptssortBy").val() + "&sortOrder=" + $("#aptssortOrder").val() + "&status=" + $("#aptsfilterBy").val() + "&date=" + $("#aptsfilterDate").val() + "#appts";
+        });
+        $("#aptsfilterBy").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#aptssortBy").val() + "&sortOrder=" + $("#aptssortOrder").val() + "&status=" + $("#aptsfilterBy").val() + "&date=" + $("#aptsfilterDate").val() + "#appts";
+        });
+        $("#aptsfilterDate").change(function () {
+            window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#aptssortBy").val() + "&sortOrder=" + $("#aptssortOrder").val() + "&status=" + $("#aptsfilterBy").val() +"&date=" + $("#aptsfilterDate").val() + "#appts";
         });
     </script>
 

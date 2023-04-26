@@ -30,14 +30,13 @@ namespace Capstonep2.Pages.Manage.Admin
             View = View ?? new ViewModel();
         }
 
-        public IActionResult OnGet(Guid? id = null, Guid? crid = null, int? pageIndex = 1, int? pageSize = 10, string? sortBy = "", SortOrder sortOrder = SortOrder.Ascending, string? keyword = "")
+        public IActionResult OnGet(Guid? id = null, Guid? crid = null, int? pageIndex = 1, int? pageSize = 10, string? sortBy = "", SortOrder sortOrder = SortOrder.Ascending, string? keyword = "", Status? status = null,DateTime? date = null)
         {
             Guid? userId = User.Id();
             var user = _context?.Users?.Where(a => a.ID == id).FirstOrDefault();
-
-            var query = _context.Patients.Where(a => a.ID != null).AsQueryable();
-
-           
+            
+            //patient query 
+            var query = _context.Patients.AsQueryable();
 
             var skip = (int)((pageIndex - 1) * pageSize);
 
@@ -79,6 +78,7 @@ namespace Capstonep2.Pages.Manage.Admin
                     query = query.OrderByDescending(a => a.Address);
                 }
             }
+          
             var pasyente = query
                            .Skip(skip)
                            .Take((int)pageSize)
@@ -93,14 +93,70 @@ namespace Capstonep2.Pages.Manage.Admin
                 SortBy = sortBy,
                 SortOrder = sortOrder,
                 Keyword = keyword
+              
 
             };
+
+            //patient query end
+
+            //appts Query
+            var query1 = _context.Appointments.Include(a=> a.Patient).AsQueryable();
+            var skip1 = (int)((pageIndex - 1) * pageSize);
+
+            if (!string.IsNullOrEmpty(keyword)) 
+            {
+                query1 = query1.Where(a =>
+                         a.Patient.FirstName != null && a.Patient.FirstName.ToLower().Contains(keyword.ToLower())
+                      || a.Patient.MiddleName != null && a.Patient.MiddleName.ToLower().Contains(keyword.ToLower())
+                      || a.Patient.LastName != null && a.Patient.LastName.ToLower().Contains(keyword.ToLower())
+
+                );
+            }
+            var totalRows1 = query1.Count();
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy.ToLower() == "firstname" && sortOrder == SortOrder.Ascending)
+                {
+                    query1 = query1.OrderBy(a => a.Patient.FirstName);
+                }
+                else if (sortBy.ToLower() == "middlename" && sortOrder == SortOrder.Ascending)
+                {
+                    query1 = query1.OrderBy(a => a.Patient.MiddleName);
+                }
+                else if (sortBy.ToLower() == "lastname" && sortOrder == SortOrder.Ascending)
+                {
+                    query1 = query1.OrderBy(a => a.Patient.LastName);
+                }
+        
+            }
+            if (status != null)
+            {
+                query1 = query1.Where(a => a.Status == status);
+            }
            
+            if (date != null)
+            {
+                query1 = query1.Where(a => a.EndTime > date && a.EndTime < date.Value.AddDays(1));
+            }
+            var appts = query1
+                          .Skip(skip)
+                          .Take((int)pageSize)
+                          .ToList();
 
 
-
-
-
+            View.Appts = new Paged<Infrastructure.Domain.Models.Appointment>()
+            {
+                Items = appts,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRows = totalRows,
+                SortBy = sortBy,
+                SortOrder = sortOrder,
+                Keyword = keyword,
+               
+                
+            };
 
 
 
@@ -130,7 +186,7 @@ namespace Capstonep2.Pages.Manage.Admin
             ViewData["gender"] = profile.Gender;
             
 
-            View = profile;
+            //View = profile;
             var appointments = _context?.Appointments?.Include(a => a.Patient).ToList();
             View.Appointments = appointments;
             var patients = _context?.Patients?.ToList();
@@ -643,6 +699,7 @@ namespace Capstonep2.Pages.Manage.Admin
             [ForeignKey("PatientID")]
             public Infrastructure.Domain.Models.Patient? Patient { get; set; }
             public Paged<Infrastructure.Domain.Models.Patient>? Pasyente { get; set; }
+            public Paged<Infrastructure.Domain.Models.Appointment>? Appts { get; set; }
 
 
             public string? NewFirstName { get; set;}
@@ -677,7 +734,7 @@ namespace Capstonep2.Pages.Manage.Admin
             public string? EditMiddleName { get; set; }
             public string? EditAddress { get; set; }
             public string? EditPatientId { get; set; }
-
+            public Status StatusFilter { get; set; }
 
             //new patient
             public string? AddFirstName { get; set; }

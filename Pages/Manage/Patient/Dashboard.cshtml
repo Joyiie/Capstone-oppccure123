@@ -424,8 +424,9 @@
     <script>
 
         window.addEventListener("load", () => {
-            var qrc = new QRCode(document.getElementById("qrcode"), 'https://localhost:7141/manage/viewpatient?id=@ViewData["PatientID"]');
-
+            var link = "https://localhost:7141/manage/admin/viewpatient?id=" + "@ViewData["PatientID"]"
+            var qrc = new QRCode(document.getElementById("qrcode"), link);
+        });
         $("#rprint").click(function () {
 
 
