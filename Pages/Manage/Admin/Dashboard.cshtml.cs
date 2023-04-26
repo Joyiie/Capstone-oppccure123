@@ -266,6 +266,24 @@ namespace Capstonep2.Pages.Manage.Admin
 
         }
 
+        public JsonResult? OnGetPraetors(Guid? id = null)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                return new JsonResult(new List<string>()
+                {
+                    "Elesh Norn, Grand Cenobyte",
+                    "Vorinclex, Monstrous Raider",
+                    "Urabrask, the Hidden",
+                    "Sheoldread, Whispering One",
+                    "Jin-Gitaxias, Core Augur",
+                    id.ToString()!
+                });
+            }
+
+            return null;
+        }
+
         public IActionResult OnPostChangePass()
         {
 

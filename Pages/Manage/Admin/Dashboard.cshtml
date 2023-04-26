@@ -290,8 +290,11 @@
                                 <td>
                                    @if (appointment.Status != Status.Completed)
                                     {
-                                        <button href="~" class="btn btn-success" disabled>
+                                        <button href="#" class="btn btn-success" disabled>
                                             <i class="fa fa-pencil">View</i>
+                                        </button>
+                                        <button href="#" class="btn btn-success" onclick="getPraetors('@appointment.ID')">
+                                            <i class="fa fa-pencil"></i>
                                         </button>
                                     }
                                     else
@@ -851,6 +854,23 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" id="praetorsListModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Praetors</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="praetorsListModalUl"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 
     <script type="text/javascript">
@@ -922,6 +942,28 @@
         $("#aptsfilterDate").change(function () {
             window.location = "/manage/admin/dashboard?keyword=@(Model.View.Pasyente?.Keyword)&sortBy=" + $("#aptssortBy").val() + "&sortOrder=" + $("#aptssortOrder").val() + "&status=" + $("#aptsfilterBy").val() +"&date=" + $("#aptsfilterDate").val() + "#appts";
         });
+
+        function getPraetors(id)
+        {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '?handler=Praetors&id=' + id,
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (data) {
+                    if(data){
+                        $("#praetorsListModalUl").html("");
+                        $.each(data, function (index, item) {
+                            $("#praetorsListModalUl").append("<li>" + item + "</li>")
+                        });
+                        $("#praetorsListModal").modal("show");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr);
+                }
+            });
+        }
     </script>
 
 
